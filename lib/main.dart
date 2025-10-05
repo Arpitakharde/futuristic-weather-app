@@ -11,19 +11,30 @@ Future<void> main() async {
   runApp(const WeatherApp());
 }
 
+
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.dark);
+
 class WeatherApp extends StatelessWidget {
   const WeatherApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Futuristic Weather App",
-      theme: ThemeData.dark(),
-      home: const WeatherHome(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (_, ThemeMode currentMode, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "Futuristic Weather App",
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: currentMode, // dynamically switch
+          home: const WeatherHome(),
+        );
+      },
     );
   }
 }
+
 
 class WeatherHome extends StatefulWidget {
   const WeatherHome({super.key});
@@ -359,6 +370,8 @@ class ParticlePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant ParticlePainter oldDelegate) => true;
 }
+
+
 
 
 
